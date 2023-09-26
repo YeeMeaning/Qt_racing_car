@@ -10,6 +10,11 @@
     <height>532</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>微軟正黑體</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -55,6 +60,11 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Adobe Devanagari</family>
+     </font>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -73,6 +83,9 @@
       <width>250</width>
       <height>100</height>
      </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
     </property>
     <property name="text">
      <string/>
@@ -112,7 +125,7 @@
      <string>行駛距離: 0公尺</string>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="lcdNumber">
+   <widget class="QLCDNumber" name="lcd_clock">
     <property name="geometry">
      <rect>
       <x>690</x>

@@ -16,14 +16,18 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>躲避車</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/src/icon.ico</normaloff>:/src/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="background">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>-10</x>
+      <y>-10</y>
       <width>4800</width>
       <height>512</height>
      </rect>
@@ -135,6 +139,114 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="block_01">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>40</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/src/item1.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="block_02">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>110</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/src/item3.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="block_03">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>180</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/src/item3.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="block_04">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>250</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/src/item3.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="block_05">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>320</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/src/item1.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="block_06">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>390</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/src/item1.png</pixmap>
+    </property>
+   </widget>
+   <zorder>background</zorder>
+   <zorder>block_06</zorder>
+   <zorder>block_05</zorder>
+   <zorder>block_04</zorder>
+   <zorder>block_03</zorder>
+   <zorder>block_02</zorder>
+   <zorder>block_01</zorder>
+   <zorder>label_title</zorder>
+   <zorder>car</zorder>
+   <zorder>button_start_game</zorder>
+   <zorder>label_distance</zorder>
+   <zorder>lcd_clock</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -145,7 +257,32 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>選單</string>
+    </property>
+    <addaction name="actionstart_game"/>
+    <addaction name="separator"/>
+    <addaction name="actionclose_game"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
+  <action name="actionstart_game">
+   <property name="text">
+    <string>開始遊戲</string>
+   </property>
+   <property name="toolTip">
+    <string>開始遊戲</string>
+   </property>
+  </action>
+  <action name="actionclose_game">
+   <property name="text">
+    <string>關閉遊戲</string>
+   </property>
+   <property name="toolTip">
+    <string>關閉遊戲</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="images.qrc"/>

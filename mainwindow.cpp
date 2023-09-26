@@ -3,7 +3,18 @@
 #include <QTimer>
 #include <QDebug>
 #include <QKeyEvent>
-
+#define BLOCK01_X_POS 300
+#define BLOCK01_Y_POS 40
+#define BLOCK02_X_POS 2300
+#define BLOCK02_Y_POS 110
+#define BLOCK03_X_POS 900
+#define BLOCK03_Y_POS 190
+#define BLOCK04_X_POS 2800
+#define BLOCK04_Y_POS 260
+#define BLOCK05_X_POS 1700
+#define BLOCK05_Y_POS 310
+#define BLOCK06_X_POS 1500
+#define BLOCK06_Y_POS 340
 
 /*
 game_status:
@@ -19,15 +30,24 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     game_status = 0;
 
+    //隱藏障礙物
+    ui->block_01->setGeometry(QRect(-100,0,64,64));
+    ui->block_02->setGeometry(QRect(-100,0,64,64));
+    ui->block_03->setGeometry(QRect(-100,0,64,64));
+    ui->block_04->setGeometry(QRect(-100,0,64,64));
+    ui->block_05->setGeometry(QRect(-100,0,64,64));
+    ui->block_06->setGeometry(QRect(-100,0,64,64));
+
+
     //移動物體
     bgm_pos = 0;
-    object_timer = new QTimer(this);
+    object_timer = new QTimer(this);  //建立計時器
     connect(object_timer, SIGNAL(timeout()), this, SLOT(update_object())); //連接訊號
     object_timer->start(10);  //每10毫秒更新一次
 
     //移動時間
     time = 30;
-    clock_timer = new QTimer(this);
+    clock_timer = new QTimer(this);  //建立計時器
     connect(clock_timer, SIGNAL(timeout()), this, SLOT(update_time())); //連接訊號
     //clock_timer->start(1000); //每1秒倒數一次
 
@@ -53,8 +73,9 @@ void MainWindow::update_object(){
         //playing
         car_distance +=1;
         ui->label_distance->setText("距離: " + QString::number(car_distance,'f',2)+"m");//顯示移動距離
-
-        move_car();
+        move_car();      // 呼叫 move_car()移動車子
+        move_blocks();   // 呼叫 move_blocks()移動障礙物
+        detect_blocks(); // 呼叫 detect_blocks()偵測障礙物
     }
 }
 
@@ -72,6 +93,17 @@ void MainWindow::update_time(){
 void MainWindow::game_stop(){
     clock_timer->stop();
     object_timer->stop();
+
+    if(game_status==3){
+        // timeout 時間到了 通關
+        ui->label_title->setPixmap(QPixmap(":/src/game_timeout.png"));
+    } else if(game_status==4){
+        // die 撞到障礙物或超出跑道，失敗
+        ui->label_title->setPixmap(QPixmap(":/src/game_falied.png"));
+    }
+    ui->label_title->setVisible(true);
+    ui->button_start_game->setVisible(true);
+    ui->actionstart_game->setText("開始遊戲"); //設定選單[開始遊戲]按鈕的文字
 }
 
 void MainWindow::on_button_start_game_clicked(){
@@ -91,6 +123,11 @@ void MainWindow::game_start(){
     car_distance =  0;                        //重設移動距離
     car_direction = 0;                        //設定初始方向
 
+    if(!object_timer->isActive()){
+        // 若物體計時器未啟用，則讓他啟用 (遊戲結束會停止)
+        object_timer->start(10);
+    }
+    ui->actionstart_game->setText("暫停遊戲"); //設定選單[開始遊戲]按鈕的文字
 }
 
 void MainWindow:: keyPressEvent(QKeyEvent *event){
@@ -118,5 +155,106 @@ void MainWindow::move_car(){
         //超過邊緣
         game_status = 4; // 設為die狀態
         game_stop();
+    }
+}
+
+void MainWindow::move_blocks(){
+    ui->block_01->setGeometry(QRect(BLOCK01_X_POS - car_distance, BLOCK01_Y_POS, 64, 64));
+    ui->block_02->setGeometry(QRect(BLOCK02_X_POS - car_distance, BLOCK02_Y_POS, 64, 64));
+    ui->block_03->setGeometry(QRect(BLOCK03_X_POS - car_distance, BLOCK03_Y_POS, 64, 64));
+    ui->block_04->setGeometry(QRect(BLOCK04_X_POS - car_distance, BLOCK04_Y_POS, 64, 64));
+    ui->block_05->setGeometry(QRect(BLOCK05_X_POS - car_distance, BLOCK05_Y_POS, 64, 64));
+    ui->block_06->setGeometry(QRect(BLOCK06_X_POS - car_distance, BLOCK06_Y_POS, 64, 64));
+}
+
+void MainWindow::detect_blocks(){
+    int tmp_padding_x, tmp_padding_y;
+
+    tmp_padding_x = BLOCK01_X_POS - car_distance;
+    tmp_padding_y = BLOCK01_Y_POS - ui->car->y();
+    if(is_collision(tmp_padding_x, tmp_padding_y)){
+        return;
+    }
+
+    tmp_padding_x = BLOCK02_X_POS - car_distance;
+    tmp_padding_y = BLOCK02_Y_POS - ui->car->y();
+    if(is_collision(tmp_padding_x, tmp_padding_y)){
+        return;
+    }
+
+    tmp_padding_x = BLOCK03_X_POS - car_distance;
+    tmp_padding_y = BLOCK03_Y_POS - ui->car->y();
+    if(is_collision(tmp_padding_x, tmp_padding_y)){
+        return;
+    }
+
+    tmp_padding_x = BLOCK04_X_POS - car_distance;
+    tmp_padding_y = BLOCK04_Y_POS - ui->car->y();
+    if(is_collision(tmp_padding_x, tmp_padding_y)){
+        return;
+    }
+
+    tmp_padding_x = BLOCK05_X_POS - car_distance;
+    tmp_padding_y = BLOCK05_Y_POS - ui->car->y();
+    if(is_collision(tmp_padding_x, tmp_padding_y)){
+        return;
+    }
+
+    tmp_padding_x = BLOCK06_X_POS - car_distance;
+    tmp_padding_y = BLOCK06_Y_POS - ui->car->y();
+    if(is_collision(tmp_padding_x, tmp_padding_y)){
+        return;
+    }
+}
+bool MainWindow::is_collision(int x, int y){
+    if((x < 247) && (x > -50)){
+        if((y < 55) && (y > -55)){
+            game_status = 4; //設為 die 的狀態
+            game_stop();
+            return true;
+        }
+    }
+    return false;
+}
+
+void MainWindow::on_actionstart_game_triggered(){
+    switch (game_status) {
+        case 0: //init
+        case 3: //timeout
+        case 4: //die
+            game_start();
+            break;
+        case 1: //playing
+        case 2: //puase
+            game_pause();
+            break;
+
+    }
+}
+
+void MainWindow::on_actionclose_game_triggered(){
+    close();
+}
+
+void MainWindow::game_pause(){
+    if(game_status == 1){
+        // playing 變為pause
+        game_status = 2;  //設為pause的狀態
+
+        clock_timer->stop(); // 停止時間計時器
+        object_timer->stop(); // 停止物體移動計時器
+
+        ui->label_title->setPixmap(QPixmap(":/src/game_pause.png")); //設定標題圖片
+        ui->label_title->setVisible(true);  //顯示標題圖片
+        ui->actionstart_game->setText("開始遊戲"); //設定選單[開始遊戲]按鈕的文字
+    } else if (game_status == 2){
+        // pause 變為playing
+        game_status = 1;  //設為playing的狀態
+
+        clock_timer->start(1000); // 開始時間計時器
+        object_timer->start(10); // 開始物體移動計時器
+
+        ui->label_title->setVisible(false);  //顯示標題圖片
+        ui->actionstart_game->setText("暫停遊戲"); //設定選單[暫停遊戲]按鈕的文字
     }
 }
